@@ -4,13 +4,14 @@
 
 name: Scorecard supply-chain security
 on:
+  workflow_dispatch:
   # For Branch-Protection check. Only the default branch is supported. See
   # https://github.com/ossf/scorecard/blob/main/docs/checks.md#branch-protection
-  branch_protection_rule:
+  # branch_protection_rule:
   # To guarantee Maintained check is occasionally updated. See
   # https://github.com/ossf/scorecard/blob/main/docs/checks.md#maintained
-  schedule:
-    - cron: '20 7 * * 2'
+  # schedule:
+  #   - cron: '20 7 * * 2'
   push:
     branches: ["main"]
 
@@ -28,7 +29,8 @@ jobs:
       id-token: write
       contents: read
       actions: read
-    if: github.event_name == 'push' || github.repository == 'nuxt/nuxt'
+    # fix for smell #9
+    # if: github.event_name == 'push' || github.repository == 'nuxt/nuxt'
 
     steps:
       - name: "Checkout code"
@@ -60,15 +62,21 @@ jobs:
       # format to the repository Actions tab.
       - name: "Upload artifact"
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
-        if: github.repository == 'nuxt/nuxt' && success()
+        # fix for smell #10 & #11
+        # if: github.repository == 'nuxt/nuxt' && success()
+        # fix for smell #11
+        if: success()
         with:
           name: SARIF file
           path: results.sarif
           retention-days: 5
-
+          
       # Upload the results to GitHub's code scanning dashboard.
       - name: "Upload to code-scanning"
         uses: github/codeql-action/upload-sarif@d39d31e687223d841ef683f52467bd88e9b21c14 # v3.25.3
-        if: github.repository == 'nuxt/nuxt' && success()
+        # fix for smell #10 & #11
+        # if: github.repository == 'nuxt/nuxt' && success()
+        # fix for smell #11
+        if: success()
         with:
           sarif_file: results.sarif
