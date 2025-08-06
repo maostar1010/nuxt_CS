@@ -1,8 +1,8 @@
 name: Close incomplete issues
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '30 1 * * *' # run every day
+  # schedule:
+  #   - cron: '30 1 * * *' # run every day
 
 permissions:
   issues: write

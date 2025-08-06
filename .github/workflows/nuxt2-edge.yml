@@ -2,8 +2,8 @@ name: nuxt2-nightly
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron:  '0 0 * * *'
+  # schedule:
+  #   - cron:  '0 0 * * *'
 
 # https://github.com/vitejs/vite/blob/main/.github/workflows/ci.yml
 env:
